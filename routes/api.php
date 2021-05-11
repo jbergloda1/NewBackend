@@ -109,5 +109,5 @@ Route::group(['namespace' => 'Api', 'middleware' => ['cors']], function () {
 
                 // //Logout
                 // Route::get('logout', 'LoginController@logout')->name('user.logout');
-    });
+     });
 });

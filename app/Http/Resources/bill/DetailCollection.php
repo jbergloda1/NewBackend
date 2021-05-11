@@ -14,7 +14,8 @@ class DetailCollection extends BaseCollection
                 'size '     => $billDetail->size ,
                 'color'     => $billDetail->color,
                 'price'     => $billDetail->price,
-                'amount'    => $billDetail->amount
+                'amount'    => $billDetail->amount,
+                'img'       => $billDetail->img
             ];
         });
     }

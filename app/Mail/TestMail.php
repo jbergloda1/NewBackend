@@ -17,10 +17,9 @@ class TestMail extends Mailable
      *
      * @return void
      */
-    public function __construct($details, $totalPrice)
+    public function __construct($details)
     {
         $this->details = $details;
-        $this->totalPrice = $totalPrice;
     }
 
     /**

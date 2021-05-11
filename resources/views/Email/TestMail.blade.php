@@ -4,57 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+     <!-- Bootstrap core CSS -->
+    <link href="{{ URL::asset('css/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+    <script src='https://netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js'></script>
+    <script src='https://code.jquery.com/jquery-1.11.1.min.js'></script>
+    <title>Thư Tự Động</title>
 </head>
 <body>
-    <h1>THÔNG TIN ĐƠN HÀNG {{$details["bill_id"]}}</h1>
-    <h2>Xin Chào {{$details["customer"]}}</h2>
-
-    
-    <body style="font-family: sans-serif;">
-        <div style="display: block; margin: auto; max-width: 600px;" class="main">
-          <h1 style="font-size: 18px; font-weight: bold; margin-top: 20px">Test Gui Mail Thanh Cong</h1>
-          <p>Cảm ơn bạn đã đặt hàng</p>
-          <p>Ngày đặt hàng {{$details['dateorder']}} </p>
-          <table>
-            <tr>
-              <td>Sản phẩm</td>
-              <td>Size</td>
-              <td>Màu</td>
-              <td>Đơn giá</td>
-              <td>Số lượng</td>
-              <td>Tổng tiền</td>
-            </tr>
-            
-              @foreach ($details['product'] as $key => $productDetails)
-              <tr>
-                <td>{{$productDetails->name}}</td>
-                <td>{{$productDetails->size}}</td>
-                <td>{{$productDetails->color}}</td>
-                <td>{{$productDetails->price}}</td>
-                <td>{{$productDetails->amount}}</td>
-                <td>{{($productDetails->amount) * ($productDetails->price)}}</td>
-              </tr>
-              <tr>
-                {{-- <td>{{ $a += ($productDetails->amount) * ($productDetails->price) }}</td> --}}
-              </tr>
-              @endforeach
-            
-
-          </table>
-          
-          {{-- <p>Số lượng {{$details['amount']}}</p> --}}
-          {{-- <p>Tổng số tiền {{$details['price']}}</p> --}}
-          <p>Phương thức thanh toán {{$details['payment']}}</p>
-          {{-- <p>Ghi chú {{$details['note']}}</p> --}}
-          <p>Đơn hàng đang được xử lý</p>
-
+  
+  <div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+        <div class="invoice-title">
+          <h2>HÓA ĐƠN</h2><h3 class="pull-right">Đơn hàng {{$details["bill_id"]}}</h3>
         </div>
-        <!-- Example of invalid for email html/css, will be detected by Mailtrap: -->
-        <style>
-          .main { background-color: white; }
-          a:hover { border-left-width: 1em; min-height: 2em; }
-        </style>
-      </body>
+        <hr>
+        <div class="row">
+          <div class="col-xs-6">
+            <address>
+            <strong>Thông tin shop:</strong><br>
+            Shop giày 500 AE<br>
+            TMA Sollution Bình Định<br>
+            Địa chỉ: TMA<br>
+            Số điện thoại: 02563113<br>
+            </address>
+          </div>
+          <div class="col-xs-6 text-right">
+            <address>
+              <strong>Thông tin giao hàng:</strong><br>
+              Khách hàng: {{$details["customer_email"]}}<br>
+              Tên: {{$details["customer_name"]}}<br>
+              Địa chỉ: {{$details["customer_address"]}}<br>
+              Số điện thoại: {{$details["customer_phone"]}}
+            </address>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6">
+            <address>
+              <strong>Phương Thức Thanh Toán:</strong><br>
+              {{$details['payment']}}<br>
+            </address>
+          </div>
+          <div class="col-xs-6 text-right">
+            <address>
+              <strong>Order Date:</strong><br>
+              {{$details['dateorder']}}<br><br>
+            </address>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title"><strong>Chi tiết đơn đặt hàng</strong></h3>
+          </div>
+          <div class="panel-body">
+            <div class="table-responsive">
+              <table class="table table-condensed">
+                <thead>
+                                <tr>
+                      <td><strong>Sản phẩm</strong></td>
+                      <td class="text-center"><strong>Hình ảnh</strong></td>
+                      <td class="text-center"><strong>Màu</strong></td>
+                      <td class="text-center"><strong>Size</strong></td>
+                      <td class="text-center"><strong>Giá</strong></td>
+                      <td class="text-center"><strong>Số lượng</strong></td>
+                      <td class="text-right"><strong>Tổng</strong></td>
+                                </tr>
+                </thead>
+                <tbody>
+                  @foreach ($details['product'] as $key => $productDetails)
+                  <tr>
+                    <td>{{$productDetails->name}}</td>
+                    <td class="text-center"><img class="resize" src="http://127.0.0.1:8000/uploads/product/{{$productDetails->img}}" ></td>
+                    <td class="text-center">{{$productDetails->color}}</td>
+                    <td class="text-center">{{$productDetails->size}}</td>
+                    <td class="text-center">{{$productDetails->price}}</td>
+                    <td class="text-center">{{$productDetails->amount}}</td>
+                    <td class="text-center">{{($productDetails->amount) * ($productDetails->price)}}</td>
+                  </tr>
+                @endforeach
+                <tr>
+                  <td class="thick-line"></td>
+                  <td class="thick-line"></td>
+                  <td class="thick-line text-center"><strong>Tổng tiền đơn hàng</strong></td>
+                  <td class="thick-line text-right">{{$details['total']}}</td>
+                </tr>
+                <tr>
+                  <td class="no-line"></td>
+                  <td class="no-line"></td>
+                  <td class="no-line text-center"><strong>Phí ship</strong></td>
+                  <td class="no-line text-right">12.000Đ</td>
+                </tr>
+                <tr>
+                  <td class="no-line"></td>
+                  <td class="no-line"></td>
+                  <td class="no-line text-center"><strong>Tổng tiền hóa đơn</strong></td>
+                  <td class="no-line text-right">{{$details['total'] + 12000}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+<style>
+        .invoice-title h2, .invoice-title h3 {
+            display: inline-block;
+        }
+
+        .table > tbody > tr > .no-line {
+            border-top: none;
+        }
+
+        .table > thead > tr > .no-line {
+            border-bottom: none;
+        }
+
+        .table > tbody > tr > .thick-line {
+            border-top: 2px solid;
+        }
+        
+</style>
+
 </html>

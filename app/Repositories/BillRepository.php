@@ -74,7 +74,8 @@ class BillRepository
                     'product.name as name', 'product.id as product_id',
                     'size.id as size_id', 'color.id as color_id',
                     'size.size as size','color.color as color',
-                    'bills_detail.price as price','bills_detail.amount as amount')
+                    'bills_detail.price as price','bills_detail.amount as amount',
+                    'product.img as img')
             ->orderBy('bills_detail.id', 'desc')
             ->paginate();
     }

@@ -46,6 +46,7 @@ class BillController
     {
         $customer_id = $request->header('customer_id');
         $items = new CartCollection($this->cartRepository->show($customer_id));
+        dd($items);
         if (!empty($items)) {
             $totalPrice          = 0;
             $totalQuantity       = 0;
@@ -70,15 +71,20 @@ class BillController
             }
             $showBillDetail = new DetailCollection($this->billRepository->showBillDetail($bill->id));
             //deleteCart
-            // $this->cartRepository->clear($customer_id);
+            $this->cartRepository->clear($customer_id);
             $details = [
-                'customer' => $customer['name'],
+                'customer_name' => $customer['name'],
+                'customer_address' => $customer->address,
+                'customer_email' => $customer->email,
+                'customer_phone' => $customer->phone,
                 'bill_id' => $bill->id,
                 'dateorder' => $bill->dateorder,
                 'payment' => $bill->payment,
+                'total' => $bill->total,
+                'note' => $bill->note,
                 'product' => $showBillDetail
             ];
-            Mail::to("jbergloda1@gmail.com")->send(new TestMail($details, $totalPrice));
+            Mail::to("jbergloda1@gmail.com")->send(new TestMail($details));
 
            
             return [
@@ -86,6 +92,11 @@ class BillController
                 'bill' => $bill,
                 'billDetail' => $showBillDetail
             ];
+        }else{
+            return response()->json([
+                'code' => 500,
+                'message' => 'Giỏ hàng trống. Vui lòng mua ít nhất 1 sản phẩm'
+            ], 500);
         }
     }
     public function show($id)

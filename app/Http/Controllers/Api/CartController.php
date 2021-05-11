@@ -45,7 +45,24 @@ class CartController extends BaseResource
     public function view(Request $request)
     {
         $customer = $request->header('customer_id');
-        return new CartCollection($this->cartRepository->show($customer));
+        $items = new CartCollection($this->cartRepository->show($customer));
+        if(!empty($items)){
+            $price      = 0;
+            $quantity   = 0;
+            foreach($items as $rowCart){
+                $price      += $rowCart['price']*$rowCart['quantity'];
+                $quantity   += $rowCart['quantity'];
+            }
+            $totalPrice = $price;
+            $totalQuantity = $quantity;
+            return $this->sendResponse([
+                'items'             => $items,
+                'total_price'       =>  $totalPrice,
+                'total_quantity'    =>  $totalQuantity,
+            ], 'View Cart');
+        }else{
+            return $this->sendError('The cart is empty');
+        }
     }
 
     public function update($id, CartRequest $cartRequest)
